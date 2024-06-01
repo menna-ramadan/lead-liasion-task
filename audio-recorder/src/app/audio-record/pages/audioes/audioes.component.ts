@@ -1,4 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { SharedServiceService } from '../../../shared/services/shared-service.service';
+import { AudioFile } from '../../models/audio.model';
+import { DURATION } from '../../../shared/contstants/update-duration.constant';
 
 @Component({
   selector: 'app-audioes',
@@ -9,15 +12,13 @@ export class AudioesComponent implements OnInit, OnDestroy {
   isRecording = false;
   mediaRecorder!: MediaRecorder;
   audioChunks: Blob[] = [];
-  audioFiles: {
-    url: string;
-    isPlaying: boolean;
-    recordingDuration: number;
-    audio: HTMLAudioElement;
-  }[] = [];
+  audioFiles: AudioFile[] = [];
   recordingDuration = 0;
   recordingInterval: any;
-  constructor(private cd: ChangeDetectorRef) {}
+  constructor(
+    private cd: ChangeDetectorRef,
+    public sharedService: SharedServiceService
+  ) {}
   ngOnInit() {}
 
   startRecording() {
@@ -26,9 +27,10 @@ export class AudioesComponent implements OnInit, OnDestroy {
       this.mediaRecorder.start();
       this.isRecording = true;
       this.recordingDuration = 0;
+      // to update recordingDuration every second
       this.recordingInterval = setInterval(() => {
         this.recordingDuration++;
-      }, 1000);
+      }, DURATION.OneSecond);
 
       this.mediaRecorder.ondataavailable = (event) => {
         this.audioChunks.push(event.data);
@@ -52,29 +54,12 @@ export class AudioesComponent implements OnInit, OnDestroy {
     });
   }
 
-  stopRecording() {
-    this.mediaRecorder.stop();
-    this.isRecording = false;
-  }
-
   togglePlay(audioFile: any) {
-    if (audioFile.isPlaying) {
-      audioFile.audio.pause();
-    } else {
-      audioFile.audio.play();
-    }
+    audioFile.isPlaying ? audioFile.audio.pause() : audioFile.audio.play();
     audioFile.isPlaying = !audioFile.isPlaying;
   }
 
-  formatTime(seconds: number): string {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-    return `${minutes} minute${
-      minutes !== 1 ? 's' : ''
-    } ${remainingSeconds} second${remainingSeconds !== 1 ? 's' : ''}`;
-  }
-
   ngOnDestroy() {
-    // clearInterval(this.recordingInterval);
+    clearInterval(this.recordingInterval);
   }
 }

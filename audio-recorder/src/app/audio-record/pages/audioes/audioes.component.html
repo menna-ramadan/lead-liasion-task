@@ -11,13 +11,13 @@
   <p *ngIf="!isRecording" class="sec1">click to start the record</p>
   <button
     *ngIf="isRecording"
-    (click)="stopRecording()"
+    (click)="mediaRecorder.stop(); isRecording = false"
     [disabled]="!isRecording"
   >
     Stop
   </button>
   <div *ngIf="isRecording">
-    Recording Duration: {{ formatTime(recordingDuration) }}
+    Recording Duration: {{ sharedService.formatTime(recordingDuration) }}
   </div>
   <ul>
     <li *ngFor="let audio of audioFiles; let i = index">
@@ -27,7 +27,7 @@
         </div>
         <div class="sec2">
           <p>Recording {{ i + 1 }}</p>
-          <span>{{ formatTime(audio.recordingDuration) }}</span>
+          <span>{{ sharedService.formatTime(audio.recordingDuration) }}</span>
         </div>
         <div class="sec3" (click)="togglePlay(audio)">
           <svg
