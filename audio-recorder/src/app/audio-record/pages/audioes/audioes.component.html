@@ -1,0 +1,19 @@
+<div class="container">
+  <h1>Audio Recorder</h1>
+  <button
+    *ngIf="!isRecording"
+    class="btn1"
+    (click)="startRecording()"
+    [disabled]="isRecording"
+  >
+    Record
+  </button>
+  <p *ngIf="!isRecording">click to start the record</p>
+  <button
+    *ngIf="isRecording"
+    (click)="stopRecording()"
+    [disabled]="!isRecording"
+  >
+    Stop
+  </button>
+</div>
