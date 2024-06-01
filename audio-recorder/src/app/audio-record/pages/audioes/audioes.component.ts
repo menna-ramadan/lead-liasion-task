@@ -12,7 +12,6 @@ export class AudioesComponent implements OnInit, OnDestroy {
   audioFiles: {
     url: string;
     isPlaying: boolean;
-
     recordingDuration: number;
     audio: HTMLAudioElement;
   }[] = [];
@@ -20,10 +19,6 @@ export class AudioesComponent implements OnInit, OnDestroy {
   recordingInterval: any;
   constructor(private cd: ChangeDetectorRef) {}
   ngOnInit() {}
-
-  ngOnDestroy() {
-    clearInterval(this.recordingInterval);
-  }
 
   startRecording() {
     navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
@@ -38,10 +33,9 @@ export class AudioesComponent implements OnInit, OnDestroy {
       this.mediaRecorder.ondataavailable = (event) => {
         this.audioChunks.push(event.data);
       };
-
       this.mediaRecorder.onstop = () => {
         clearInterval(this.recordingInterval);
-        const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+        const audioBlob = new Blob(this.audioChunks);
         const audioUrl = URL.createObjectURL(audioBlob);
         const audio = new Audio(audioUrl);
         const newAudioFile = {
@@ -54,15 +48,6 @@ export class AudioesComponent implements OnInit, OnDestroy {
         this.cd.detectChanges();
         this.audioChunks = [];
         this.recordingDuration = 0;
-
-        audio.onended = () => {
-          const audioFile = this.audioFiles.find(
-            (file) => file.audio === audio
-          );
-          if (audioFile) {
-            audioFile.isPlaying = false;
-          }
-        };
       };
     });
   }
@@ -70,7 +55,6 @@ export class AudioesComponent implements OnInit, OnDestroy {
   stopRecording() {
     this.mediaRecorder.stop();
     this.isRecording = false;
-    clearInterval(this.recordingInterval);
   }
 
   togglePlay(audioFile: any) {
@@ -88,5 +72,9 @@ export class AudioesComponent implements OnInit, OnDestroy {
     return `${minutes} minute${
       minutes !== 1 ? 's' : ''
     } ${remainingSeconds} second${remainingSeconds !== 1 ? 's' : ''}`;
+  }
+
+  ngOnDestroy() {
+    // clearInterval(this.recordingInterval);
   }
 }

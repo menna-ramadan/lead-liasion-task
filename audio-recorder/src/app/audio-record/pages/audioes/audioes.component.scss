@@ -13,11 +13,6 @@
   border-radius: 50%;
 }
 
-.fill-back {
-  background-color: black;
-  fill: black;
-}
-
 .num {
   width: 45px;
   height: 45px;
@@ -25,6 +20,10 @@
   background-color: black;
   color: white;
   text-align: center;
+}
+.sec1 {
+  margin-top: 0;
+  color: grey;
 }
 button {
   padding: 10px 20px;
@@ -43,13 +42,14 @@ li {
   text-align: center;
 }
 .sec2 {
-  margin: 0 5px;
+  margin-left: 10px;
   p {
     margin-bottom: 0;
     font-weight: 600;
     margin-top: 3px;
     font-weight: 600;
-    margin-left: 10px;
+
+    text-align: start;
   }
   span {
     color: grey;
@@ -65,13 +65,4 @@ li {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.audio-player .play-pause {
-  padding: 5px 10px;
-  margin-right: 10px;
-}
-
-.audio-player .time {
-  margin-right: 10px;
 }

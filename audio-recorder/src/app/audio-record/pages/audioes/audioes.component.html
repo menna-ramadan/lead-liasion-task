@@ -8,7 +8,7 @@
   >
     Record
   </button>
-  <p *ngIf="!isRecording">click to start the record</p>
+  <p *ngIf="!isRecording" class="sec1">click to start the record</p>
   <button
     *ngIf="isRecording"
     (click)="stopRecording()"
