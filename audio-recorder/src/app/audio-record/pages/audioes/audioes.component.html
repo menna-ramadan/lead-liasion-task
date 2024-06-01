@@ -16,4 +16,33 @@
   >
     Stop
   </button>
+  <div *ngIf="isRecording">
+    Recording Duration: {{ formatTime(recordingDuration) }}
+  </div>
+  <ul>
+    <li *ngFor="let audio of audioFiles; let i = index">
+      <div class="audio-player">
+        <div class="num">
+          <p>{{ i + 1 }}</p>
+        </div>
+        <div class="sec2">
+          <p>Recording {{ i + 1 }}</p>
+          <span>{{ formatTime(audio.recordingDuration) }}</span>
+        </div>
+        <div class="sec3" (click)="togglePlay(audio)">
+          <svg
+            width="24"
+            height="24"
+            xmlns="http://www.w3.org/2000/svg"
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+          >
+            <path
+              d="M23 12l-22 12v-24l22 12zm-21 10.315l18.912-10.315-18.912-10.315v20.63z"
+            />
+          </svg>
+        </div>
+      </div>
+    </li>
+  </ul>
 </div>
