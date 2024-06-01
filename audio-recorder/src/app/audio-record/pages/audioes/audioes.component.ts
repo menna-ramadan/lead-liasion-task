@@ -14,7 +14,7 @@ export class AudioesComponent implements OnInit, OnDestroy {
   audioChunks: Blob[] = [];
   audioFiles: AudioFile[] = [];
   recordingDuration = 0;
-  recordingInterval: any;
+  recordingInterval!: ReturnType<typeof setInterval>;
   constructor(
     private cd: ChangeDetectorRef,
     public sharedService: SharedServiceService
